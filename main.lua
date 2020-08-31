@@ -76,10 +76,10 @@ function love.draw() -- Também executado a cada frame, essa função desenha na
 end
 
 function displayFPS()
-love.graphics.setFont(smallFont)
-love.graphics.setColor(0,255/255,0,255/255)
-love.graphics.print('FPS: ' .. tostring(love.timer.getFPS()),10,10)
---o .. serve pra concatenar as strings.
+    love.graphics.setFont(smallFont)
+    love.graphics.setColor(0,255/255,0,255/255)
+    love.graphics.print('FPS: ' .. tostring(love.timer.getFPS()),10,10)
+    --o .. serve pra concatenar as strings.
 end
 
 function love.update(dt)
@@ -89,13 +89,15 @@ function love.update(dt)
             --Se a bola colidir com o player1, a direção x da bola se torna negativa, multiplicado por 0.03. Isso faz com que a bola. Mude de direção e aumente um pouco a velocidade.
             ball.x = player1.x + 5
             --Faz com que a direção da bola não seja alterada caso ainda estiver colidindo com a raquete, de forma instantânea. + 5 Porque essa é a largura da raquete.
+          
             if ball.dy < 0 then
                 ball.dy =-math.random(10,150)
             else
                 ball.dy = math.random(10,150)
                 --Faz com que a velocidade vá na mesma direção, mas de forma randomizada.
+       
+            end
         end
-
         if ball:collides(player2) then
             ball.dx = -ball.dx * 1.03
             --Se a bola colidir com o player1, a direção x da bola se torna negativa, multiplicado por 0.03. Isso faz com que a bola. Mude de direção e aumente um pouco a velocidade.
@@ -108,7 +110,18 @@ function love.update(dt)
                 --Faz com que a velocidade vá na mesma direção, mas de forma randomizada.
             end
         end
-            --Movimento do player 1
+   
+        if ball.y <= 0 then
+            ball.y = 0
+            ball.dy = -ball.dy    
+        end    
+        if ball.y >= VIRTUAL_HEIGHT - 4 then
+            ball.y = VIRTUAL_HEIGHT - 4
+            ball.dy = -ball.dy
+        end
+    end
+
+    --Movimento do player 1
     if love.keyboard.isDown('w') then
         player1.dy = -PADDLE_SPEED
     elseif love.keyboard.isDown('s') then
@@ -125,14 +138,16 @@ function love.update(dt)
     else
         player2.dy = 0
     end
+
     if gameState == 'play' then
         ball:update(dt)
     end
+
+        player1:update(dt)
+        player2:update(dt)
+
 end
-    player1:update(dt)
-    player2:update(dt)
-end
-end
+
 function love.keypressed(key) 
     if key == 'escape' then 
         love.event.quit() 

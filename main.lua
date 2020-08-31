@@ -30,7 +30,7 @@ function love.load() -- Inicia o gamestate no começo da execução do programa,
     push:setupScreen(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, WINDOW_WIDTH, WINDOW_HEIGHT,
                      {
         fullscreen = false,
-        resizable = false,
+        resizable = true,
         vsync = true -- Sincronizado com a taxa de atualização do monitor.
     })
 
@@ -46,6 +46,9 @@ function love.load() -- Inicia o gamestate no começo da execução do programa,
     gameState = 'start'
 end --COLOCAR END E FUNCTION NAS FUNÇÕES
 
+function love.resize(w,h)
+    push:resize(w,h)
+end
 sounds = {
     ['paddle_hit'] = love.audio.newSource('sounds/paddle_hit.wav', 'static'),
     ['score'] = love.audio.newSource('sounds/score.wav', 'static'),
@@ -322,5 +325,12 @@ love.audio.newSource (caminho, [tipo])
 “Stream” ou “estático”; ativos transmitidos serão transmitidos do disco conforme necessário, enquanto ativos estáticos serão preservados em
 memória. Para efeitos sonoros e faixas de música maiores, o streaming é mais eficaz na memória; em nossos exemplos, recursos de áudio
 são estáticos, visto que são tão pequenos que não ocupam muita memória.
+
+    Funções importantes pong-12
+
+love.resize (largura, altura)
+-Chamado pelo LÖVE toda vez que redimensionamos o aplicativo; a lógica deve entrar aqui se alguma coisa no jogo (como uma UI) for
+dimensionado dinamicamente com base no tamanho da janela. push:resize() precisa ser chamado aqui para nosso caso de uso para que possa
+redimensione dinamicamente sua tela interna para se ajustar às novas dimensões da janela.
 
 --]]

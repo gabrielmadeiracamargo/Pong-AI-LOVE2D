@@ -6,11 +6,11 @@ require 'Paddle'
 
 require 'Ball'
 
-WINDOW_WIDTH = 1280
-WINDOW_HEIGHT = 720
+WINDOW_WIDTH = love.graphics.getWidth()
+WINDOW_HEIGHT = love.graphics.getHeight()
 
-VIRTUAL_WIDTH = 432
-VIRTUAL_HEIGHT = 243
+VIRTUAL_WIDTH = WINDOW_WIDTH/2.96296296296
+VIRTUAL_HEIGHT = WINDOW_HEIGHT/2.96296296296
 
 PADDLE_SPEED = 200
 
@@ -29,7 +29,7 @@ function love.load()
 
     push:setupScreen(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, WINDOW_WIDTH, WINDOW_HEIGHT,
                      {
-        fullscreen = false,
+        fullscreen = true,
         resizable = true,
         vsync = true 
     })

@@ -25,6 +25,8 @@ function love.load() -- Inicia o gamestate no começo da execução do programa,
 
     love.graphics.setFont(smallFont)
 
+    love.window.setTitle("Crazy Pong!")
+
     push:setupScreen(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, WINDOW_WIDTH, WINDOW_HEIGHT,
                      {
         fullscreen = false,
@@ -68,9 +70,18 @@ function love.draw() -- Também executado a cada frame, essa função desenha na
     love.graphics.print(tostring(player1Score), VIRTUAL_WIDTH / 2 - 50, VIRTUAL_HEIGHT / 3)
     love.graphics.print(tostring(player2Score), VIRTUAL_WIDTH / 2 + 30, VIRTUAL_HEIGHT / 3)
 
-    push:apply('end')
+    displayFPS()
 
+    push:apply('end')
 end
+
+function displayFPS()
+love.graphics.setFont(smallFont)
+love.graphics.setColor(0,255/255,0,255/255)
+love.graphics.print('FPS: ' .. tostring(love.timer.getFPS()),10,10)
+--o .. serve pra concatenar as strings.
+end
+
 function love.update(dt)
     -- player 1 movement
     if love.keyboard.isDown('w') then
@@ -100,7 +111,6 @@ function love.update(dt)
     player1:update(dt)
     player2:update(dt)
 end
-
 
 function love.keypressed(key) 
     if key == 'escape' then 
@@ -195,4 +205,14 @@ math.min (num1, num2)
 -Retorna o menor dos dois números passados.
 math.max (num1, num2)
 -Retorna o maior dos dois números passados.
+
+    Funções importantes pong-5
+            ...
+
+Funções importantes pong-6
+
+love.window.setTitle (título)
+Simplesmente define o título da janela do nosso aplicativo, adicionando um leve nível de polimento.
+love.timer.getFPS ()
+-Retorna o FPS atual de nosso aplicativo, facilitando o monitoramento quando impresso.
 --]]

@@ -46,6 +46,14 @@ function love.load() -- Inicia o gamestate no começo da execução do programa,
     gameState = 'start'
 end --COLOCAR END E FUNCTION NAS FUNÇÕES
 
+sounds = {
+    ['paddle_hit'] = love.audio.newSource('sounds/paddle_hit.wav', 'static'),
+    ['score'] = love.audio.newSource('sounds/score.wav', 'static'),
+    ['wall_hit'] = love.audio.newSource('sounds/wall_hit.wav', 'static'),
+    ['player_wins'] = love.audio.newSource('sounds/player_wins.wav', 'static'),
+    ['enemy_wins'] = love.audio.newSource('sounds/enemy_wins.wav', 'static')
+
+}
 
 function love.draw() -- Também executado a cada frame, essa função desenha na tela. Equivalente ao Render do Java e Draw do GameMaker.
     push:apply('start')
@@ -106,6 +114,7 @@ function love.update(dt)
         end
         elseif gameState == 'play' then
         if ball:collides(player1) then
+            sounds['paddle_hit']:play()
             ball.dx = -ball.dx * 1.03
             --Se a bola colidir com o player1, a direção x da bola se torna negativa, multiplicado por 0.03. Isso faz com que a bola. Mude de direção e aumente um pouco a velocidade.
             ball.x = player1.x + 5
@@ -120,6 +129,7 @@ function love.update(dt)
             end
         end
         if ball:collides(player2) then
+            sounds['paddle_hit']:play()
             ball.dx = -ball.dx * 1.03
             --Se a bola colidir com o player1, a direção x da bola se torna negativa, multiplicado por 0.03. Isso faz com que a bola. Mude de direção e aumente um pouco a velocidade.
             ball.x = player2.x - 4
@@ -135,18 +145,23 @@ function love.update(dt)
         if ball.y <= 0 then
             ball.y = 0
             ball.dy = -ball.dy    
+            sounds['wall_hit']:play()
         end    
         if ball.y >= VIRTUAL_HEIGHT - 4 then
             ball.y = VIRTUAL_HEIGHT - 4
             ball.dy = -ball.dy
+            sounds['wall_hit']:play()
         end
 
         if ball.x < 0 then
             servingPlayer = 1
             player2Score = player2Score + 1
-         
+            if player2Score < 10 then
+            sounds['score']:play()
+            end
             if player2Score == 10 then
                 winningPlayer = 2
+                sounds['enemy_wins']:play()
                 gameState = 'done'
             else
              gameState = 'serve'
@@ -157,9 +172,12 @@ function love.update(dt)
         if ball.x > VIRTUAL_WIDTH then
             servingPlayer = 2
             player1Score = player1Score + 1
-
+            if player2Score < 10 then
+            sounds['score']:play()
+            end
             if player1Score == 10 then
                 winningPlayer = 1
+                sounds['player_wins']:play()
                 gameState = 'done'
             else
              gameState = 'serve'
@@ -290,10 +308,19 @@ math.max (num1, num2)
     Funções importantes pong-5
             ...
 
-Funções importantes pong-6
+    Funções importantes pong-6
 
 love.window.setTitle (título)
 Simplesmente define o título da janela do nosso aplicativo, adicionando um leve nível de polimento.
 love.timer.getFPS ()
 -Retorna o FPS atual de nosso aplicativo, facilitando o monitoramento quando impresso.
+
+    Funções importantes pong-11
+
+love.audio.newSource (caminho, [tipo])
+-Cria um objeto de áudio LÖVE2D que podemos reproduzir em qualquer ponto do nosso programa. Também pode receber um "tipo" de
+“Stream” ou “estático”; ativos transmitidos serão transmitidos do disco conforme necessário, enquanto ativos estáticos serão preservados em
+memória. Para efeitos sonoros e faixas de música maiores, o streaming é mais eficaz na memória; em nossos exemplos, recursos de áudio
+são estáticos, visto que são tão pequenos que não ocupam muita memória.
+
 --]]
